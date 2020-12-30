@@ -1,0 +1,15 @@
+#!/bin/bash
+export hostip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
+if [[ $1 = "on" ]]
+then
+	echo "Turn on the proxy at ${hostip}"
+	export http_proxy=http://${hostip}:7890 
+	export https_proxy=http://${hostip}:7890
+	export all_proxy=socks5://${hostip}:7890
+elif [[ $1 = "off" ]]
+then
+	echo "Turn off the proxy at ${hostip}"
+	unset all_proxy
+	unset http_proxy
+	unset https_proxy
+fi
